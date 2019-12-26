@@ -61,3 +61,8 @@ wget https://dl.grafana.com/oss/release/grafana-6.5.2.linux-amd64.tar.gz
 tar -zxf grafana-6.5.2.linux-amd64.tar.gz
 cd grafana-6.5.2 && bin/grafana-server
 ~~~
+And now you can import dashboard (Google ask: prometheus node_exporter grafana) \
+from here https://grafana.com/grafana/dashboards/1860 \
+Recommended use [1806] and [405]
+\
+Video source is https://youtu.be/4WWW2ZLEg74
