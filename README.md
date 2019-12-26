@@ -62,7 +62,21 @@ tar -zxf grafana-6.5.2.linux-amd64.tar.gz
 cd grafana-6.5.2 && bin/grafana-server
 ~~~
 And now you can import dashboard (Google ask: prometheus node_exporter grafana) \
-from here https://grafana.com/grafana/dashboards/1860 \
+from here https://grafana.com/grafana/dashboards/ \
 Recommended use [1806] and [405]
 \
+\
 Video source is https://youtu.be/4WWW2ZLEg74
+\
+\
+\
+Alertmanager \
+https://prometheus.io/download/ \
+https://github.com/prometheus/alertmanager#install
+~~~sh
+wget https://github.com/prometheus/alertmanager/releases/download/v0.20.0/alertmanager-0.20.0.linux-amd64.tar.gz
+tar zxf alertmanager-0.20.0.linux-amd64.tar.gz
+cd alertmanager-0.20.0.linux-amd64 
+
+./alertmanager
+~~~
