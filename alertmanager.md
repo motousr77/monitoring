@@ -1,7 +1,36 @@
-### Configure for my case 
-#### Instantiate prometheus and other service under the obvious executing (./application_name)
+## Configure for my case 
+### Instantiate prometheus and other services in general executing (./application_name)
+\
+Alert Rules file (save anywhere and store path to file for prometheus)
+~~~yml
+# alert_rules.yaml
+groups:
+- name: memory_cpu_usage_
+  rules:
+  # Alert Rule for Server Memory Highload
+  - alert: OutOfMemory
+    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 40
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Out of memory (instance {{ $labels.instance }})"
+      description: "Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+  # Alert Rule for Server Node Highload
+  - alert: NodeLoad1
+    expr: node_load1 > 1.0
+    for: 20s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Server under high load"
+      description: "Server under high load {{ $value}}. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}."
+~~~
 \
 Prometheus YML
+~~~sh
+./prometheus --config.file="prometheus.yml"
+~~~
 ~~~yml
 # prometheus.yml 
 global:
@@ -29,6 +58,9 @@ scrape_configs:
 ~~~
 \
 Alert Manager YML
+~~~sh
+./alertmanager --config.file="alertmanager.yml"
+~~~
 ~~~yml
 # alertmanager.yml
 global:
@@ -43,32 +75,6 @@ receivers:
   - channel: '#test'
     title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
     text: "http://18.218.59.27:9090/alerts \n{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}"
-~~~
-\
-Alert Rules file (save anywhere and store path to file for prometheus)
-~~~yml
-# alert_rules.yaml
-groups:
-- name: memory_cpu_usage_
-  rules:
-  # Alert Rule for Server Memory Highload
-  - alert: OutOfMemory
-    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 40
-    for: 1m
-    labels:
-      severity: warning
-    annotations:
-      summary: "Out of memory (instance {{ $labels.instance }})"
-      description: "Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
-  # Alert Rule for Server Node Highload
-  - alert: NodeLoad1
-    expr: node_load1 > 1.0
-    for: 20s
-    labels:
-      severity: warning
-    annotations:
-      summary: "Server under high load"
-      description: "Server under high load {{ $value}}. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}."
 ~~~
 \
 May will be edited :)
